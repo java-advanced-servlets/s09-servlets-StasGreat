@@ -26,7 +26,7 @@ import java.util.List;
 public abstract class BaseIT {
 
     protected static Tomcat tomcat;
-    protected static final String WEB_PORT = "8080";
+    protected static final String WEB_PORT = "8081";
     protected List<Task> testTasks;
 
     @BeforeAll
@@ -42,7 +42,6 @@ public abstract class BaseIT {
         tomcat.setPort(Integer.parseInt(webPort));
 
         StandardContext ctx = (StandardContext) tomcat.addWebapp("/", new File(webappDirLocation).getAbsolutePath());
-        ctx.setDelegate(true);
         ctx.getServletContext().setAttribute(Globals.ALT_DD_ATTR, webappDirLocation + "WEB-INF/web.xml");
 
         File additionWebInfClasses = new File("target/classes");
@@ -51,7 +50,6 @@ public abstract class BaseIT {
                 additionWebInfClasses.getAbsolutePath(), "/"));
         ctx.setResources(resources);
 
-        tomcat.getConnector();
         tomcat.start();
     }
 
@@ -67,7 +65,7 @@ public abstract class BaseIT {
         TaskRepository.getTaskRepository().deleteAll();
 
         testTasks = new ArrayList<>();
-        Task task1 = new Task("Task #1", Priority.HIGH);
+        Task task1 = new Task("Test Task 1", Priority.HIGH);
         Task task2 = new Task("Test Task 2", Priority.MEDIUM);
 
         TaskRepository.getTaskRepository().create(task1);
